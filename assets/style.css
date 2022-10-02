@@ -14,3 +14,6 @@ h1 {
     color:black;
 }
 
+#current-city {
+    background-image: var(--bs-gradient);
+    background-color:#000000;
