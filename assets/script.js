@@ -28,6 +28,8 @@ dailyUv = []
 
 dailyData = []
 
+cityHistoryArray = []
+
 const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 
 date.textContent = todaysDate;
@@ -49,7 +51,7 @@ date.textContent = todaysDate;
 // let searchHistory = document.createElement("div");
 // let listEl = document.createElement("li");
 
-
+let cityName = "";
 //   console.log("city");
 //   console.log(typeCity.value);
 function GetcityWeather() {
@@ -69,6 +71,7 @@ function GetcityWeather() {
 
     
             cityName = (data[0].name);
+            console.log(cityName);
          searchedCity.textContent = cityName;
          
          temp.textContent = "Temp: " + ( dataOne.current.temp) + "°F";
@@ -86,76 +89,41 @@ function GetcityWeather() {
         //   console.log(dataOne.daily[i]);
 
           
-         displayFiveDay(dataOne.daily)
+         displayFiveDay(dataOne.daily);
+         saveCity(cityName);
           
-         
-          // const fiveDay =document.getElementById('section-fiveday');
-          
-          // const root =document.getElementById('section-fiveday');
-          // root.innerHTML = 
-        //   fiveDay.append(`
-        //    <div class="card border border-dark col-3" style="width: 18rem;">
-        //   <div class="card-body">
-        //    <h5 class="card-title" id="date"></h5>
-        //    <ul>
-        //     <li>Temp:${dailyTemp[i]}°F</li>
-        //     <li>Wind:${dailyWind[i]}mph</li>
-        //     <li>$Humidity:${dailyHum[i]}%</li>
-        //     <li>UV Index:${dailyUv[i]}</li>
-        //     <li id="uv"></li>
-        //   </ul>
-        //   </div>
-        //  </div>`);
-        //  root.appendChild('section-fiveday');
-         
-        
+        //  dateConversion(dataOne.daily)
 
-
-
-        //   console.log(displayWeather);
+      
         });
     });
     
 }
 
 
-  // data.daily.forEach(function (dailyData, index) {
-  //   $(`#section-fiveday`).empty();
-  //   if (index >=5) return;
-  //   // const root =document.getElementById('section-fiveday');
-  //   // root.innerHTML = 
-  //   $(`#section-fiveday`).append(`
-  //    <div class="card border border-dark col-3" style="width: 18rem;">
-  //   <div class="card-body">
-  //    <h5 class="card-title" id="date"></h5>
-  //    <ul>
-  //     <li>Temp:${dailyTemp[i]}°F</li>
-  //     <li>Wind:${dailyWind[i]}mph</li>
-  //     <li>$Humidity:${dailyHum[i]}%</li>
-  //     <li>UV Index:${dailyUv[i]}</li>
-  //     <li id="uv"></li>
-  //   </ul>
-  //   </div>
-  //  </div>`);
-  // //  root.appendChild('section-fiveday');
   
-  // })
 // for card dates luxon.DateTime.fromSeconds(dailyData.dt) then format 
 
 function displayFiveDay(forecast) {
   const root = document.getElementById('section-fiveday');
 
+
+  
   forecast.forEach(function (dailyData, index) {
+    if (dailyData < 1 && dailyData > 4) return;
     console.log(dailyData);
     console.log(index);
+    // let unixDate = (dailyData.dt)
+
     const card = document.createElement('div');
     card.classList.add('card','border','border-dark', 'col-3');
     card.style.width = '19rem';
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
     card.appendChild(cardBody);
+
     const cardTitle = document.createElement('h5');
-    cardTitle.textContent = (dailyData.dt);
+    cardTitle.textContent = luxon.DateTime.fromSeconds(dailyData.dt).weekdayLong;
     cardTitle.classList.add('card-title')
     const fiveDayUL = document.createElement('ul');
     const fiveDayTemp = document.createElement('li');
@@ -176,31 +144,12 @@ function displayFiveDay(forecast) {
     fiveDayTemp.appendChild(fiveDayWind);
     fiveDayWind.appendChild(fiveDayHum);
     fiveDayHum.appendChild(fiveDayUv);
-    // fiveDayUL.appendChild(cardTitle);
-    // fiveDayTemp.appendChild(fiveDayUL);
-
-
-
-
-
-
+    
   }
    
   );
 }
-//   root.innerHTML = `<div class="card border border-dark col-3" style="width: 18rem;">
-//       <div class="card-body">
-//        <h5 class="card-title" id="date"></h5>
-//        <ul>
-//         <li id="icon"></li>
-//         <li> ${dailyTemp[i]}"</li>
-//         <li> {dailyWind[i]}</li>
-//         <li> {dailyHum[i]}</li>
-//         <li> {dailyUv[i]}</li>
-//       </ul>
-//       </div>
-//      </div> `
-//   ;
+
 
 
 searchButton.addEventListener("click", function (event) {
@@ -210,21 +159,38 @@ searchButton.addEventListener("click", function (event) {
 //   return;
 //   } else {
   GetcityWeather();
-  
+  saveCity()
   
   console.log(GetcityWeather);
   }
 );
 
+function saveCity() {
+  // const cityHistory = ('input').val();
 
+  const historyList = JSON.parse(
+    localStorage.getItem("recent-searches")
+  );
+
+  if (!historyList) {
+    localStorage.setItem(
+      'recent-searches',
+      JSON.stringify({cityName})
+    );
+    return;
+  }
+  localStorage.setItem('history-list', JSON.stringify({ ...historyList, cityName  })
+  );
+}
+
+function getCity() {
+  
+}
 
 
     
 
+    
 
-// let city = document.createElement('h3');
-//           city = "";
 
-//           city.textcontent = data[0].name;
 
-//           currentCity.append(city);
