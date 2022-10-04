@@ -17,6 +17,7 @@ let searchedCity = document.getElementById("searched-city");
 const { DateTime } = luxon;
 let date =document.getElementById("date");
 let icon = document.getElementById("icon");
+const history = document.querySelector('#history');
 
 dailyTemp = []
 
@@ -34,6 +35,14 @@ const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 
 date.textContent = todaysDate;
 
+function innit() {
+  displayCityHistory(cityList);
+  // if (localStorage.getItem("cityHistoryArray") !== null) {
+  //   cityHistoryArray = JSON.parse(localStorage.getItem("cityHistoryArray"));
+  // }
+  saveCity()
+  
+}
 
 // // create main header ,
 // let body = document.body;
@@ -51,7 +60,7 @@ date.textContent = todaysDate;
 // let searchHistory = document.createElement("div");
 // let listEl = document.createElement("li");
 
-let cityName = "";
+//let cityName = "";
 //   console.log("city");
 //   console.log(typeCity.value);
 function GetcityWeather() {
@@ -90,7 +99,8 @@ function GetcityWeather() {
 
           
          displayFiveDay(dataOne.daily);
-         saveCity(cityName);
+         saveCity(typeCity.value);
+        //  displayCityHistory();
           
         //  dateConversion(dataOne.daily)
 
@@ -161,36 +171,54 @@ searchButton.addEventListener("click", function (event) {
   GetcityWeather();
   saveCity()
   
+ displayCityHistory();
+  
   console.log(GetcityWeather);
   }
 );
 
 function saveCity() {
   // const cityHistory = ('input').val();
+  //let cityName = ('<input>');
+  // const cityHistoryArray = JSON.parse(
+  //   localStorage.getItem("cityHistoryArray")
+  // );
 
-  const historyList = JSON.parse(
-    localStorage.getItem("recent-searches")
-  );
-
-  if (!historyList) {
-    localStorage.setItem(
-      'recent-searches',
-      JSON.stringify({cityName})
-    );
-    return;
+  if (!cityHistoryArray.includes(typeCity.value)) {
+     cityHistoryArray.push(typeCity.value);  
+  localStorage.setItem('cityHistoryArray', JSON.stringify(cityHistoryArray));
   }
-  localStorage.setItem('history-list', JSON.stringify({ ...historyList, cityName  })
-  );
+  // displayCityHistory(cityHistoryArray)
 }
 
-function getCity() {
+
+function displayCityHistory() {
+  
+  if (localStorage.getItem('cityHistoryArray') !== null) {
+    const cityHistoryArray = JSON.parse(localStorage.getItem('cityHistoryArray'));
+    // refreshDisplay(history);
+    // if (localStorage.getItem('typeCity.value') === null) {
+    //   return;
+    // } else {
+    // for (let i = 0; i <  cityHistoryArray.length; i ++) {
+    cityHistoryArray.forEach(function(cityHistoryArray) {
+      const cityList = document.createElement('li');
+      cityList.textContent = cityHistoryArray;
+      history.appendChild(cityList);
+    })
+    }
   
 }
 
 
-    
+function refreshDisplay(parentElement) {
 
-    
+  while (parentElement.firstChild) {
 
+      parentElemement.removeChild(parentElement);
 
+  }
 
+}
+
+displayCityHistory();
