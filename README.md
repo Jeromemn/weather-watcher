@@ -19,7 +19,9 @@ Type in a city in the US and select search. Doing this will pull up todays weath
 
 <img src= "assets/WeatherWatcher.jpg"></img>
 
-<img src= "(assets/Weather%20Watcher.webm"></img>
+[Weather Watcher.webm](https://user-images.githubusercontent.com/112592440/193977693-a4c72533-bdc8-42ea-b909-e6b6373063ec.webm)
+
+
 
 ## Credits
 
