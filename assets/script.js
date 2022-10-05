@@ -13,7 +13,7 @@ let date =document.getElementById("date");
 let icon = document.getElementById("icon");
 const history = document.querySelector('#history');
 const todaysIcon = document.querySelector('#icon');
-
+const replaceWeather = document.querySelector('#replaceWeather');
 const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 
 date.textContent = todaysDate;
@@ -63,7 +63,7 @@ function displayFiveDay(forecast) {
     if (index < 1 || index > 5) return;
 
     const card = document.createElement('div');
-    card.classList.add('card','border','border-dark', 'col');
+    card.classList.add('card','border','border-dark', 'col', 'm-3','bg-dark','text-white');
     card.style.width = '100%';
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
@@ -73,15 +73,20 @@ function displayFiveDay(forecast) {
     cardTitle.textContent = luxon.DateTime.fromSeconds(dailyData.dt).weekdayLong;
     cardTitle.classList.add('card-title')
     const fiveDayUL = document.createElement('ul');
+    fiveDayUL.classList.add('text-left', 'p-2');
     const weatherIcon = document.createElement('img');
     weatherIcon.src = "http://openweathermap.org/img/w/" + dailyData.weather[0].icon + ".png";
     const fiveDayTemp = document.createElement('li');
+    fiveDayTemp.classList.add('list-inline-item', 'p-2');
     fiveDayTemp.textContent = "Temp: " + (dailyData.temp.max) + "°F";
     const fiveDayWind = document.createElement('li');
+    fiveDayWind.classList.add('list-inline-item');
     fiveDayWind.textContent = "Wind: " + (dailyData.wind_speed) + "mph";
     const fiveDayHum = document.createElement('li');
+    fiveDayHum.classList.add('list-inline-item');
     fiveDayHum.textContent = "Humidity: " + (dailyData.humidity) + "%";
     const fiveDayUv = document.createElement('li');
+    fiveDayUv.classList.add('list-inline-item');
     fiveDayUv.textContent = "UV Index: " + (dailyData.uvi);
   
     root.appendChild(card);
@@ -107,6 +112,7 @@ searchButton.addEventListener("click", function (event) {
   if (!typeCity.value.length) return;
   getCityWeather(typeCity.value);
   saveCity()
+  replaceWeather.style.display = 'none';
   
 }
 );
@@ -128,12 +134,13 @@ function displayCityHistory() {
     removeChildren(history);
     cityHistoryArray.forEach(function(city) {
       const cityButton = document.createElement('button');
-      cityButton.classList.add('btn', 'btn-secondary', 'col','mb-1')
+      cityButton.classList.add('btn', 'btn-secondary', 'col','mb-2')
       cityButton.textContent = city;
       history.appendChild(cityButton);
       cityButton.addEventListener('click', function(event) {
         event.preventDefault();
         getCityWeather(city);
+        replaceWeather.style.display = 'none';
     });
     })
     

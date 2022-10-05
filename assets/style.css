@@ -3,8 +3,9 @@ body {
 }
 
 #header {
-    color: black;
+    color: rgb(247, 10, 10);
     font-size: 12px;
+    background-color: rgba(2, 2, 197, 0.568);
 }
 h1 {
     color: black;
@@ -23,3 +24,6 @@ h1 {
     list-style: none;
 }
 
+@mixin gradient-x($start-color: $gray-700, $end-color: $gray-800, $start-percent: 0%, $end-percent: 100%) {
+    background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+  }
