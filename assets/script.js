@@ -38,7 +38,7 @@ function getCityWeather(city) {
     
             cityName = (data[0].name);
          searchedCity.textContent = cityName;
-         todaysIcon.src = "http://openweathermap.org/img/w/" + dataOne.current.weather[0].icon + ".png";
+         todaysIcon.src = "https://openweathermap.org/img/w/" + dataOne.current.weather[0].icon + ".png";
          temp.textContent = "Temp: " + ( dataOne.current.temp) + "°F";
          wind.textContent = "Wind: " + ( dataOne.current.wind_speed) + "mph";
          hum.textContent = "Humidity: " + ( dataOne.current.humidity) + "%";
@@ -75,7 +75,7 @@ function displayFiveDay(forecast) {
     const fiveDayUL = document.createElement('ul');
     fiveDayUL.classList.add('text-left', 'p-2');
     const weatherIcon = document.createElement('img');
-    weatherIcon.src = "http://openweathermap.org/img/w/" + dailyData.weather[0].icon + ".png";
+    weatherIcon.src = "https://openweathermap.org/img/w/" + dailyData.weather[0].icon + ".png";
     const fiveDayTemp = document.createElement('li');
     fiveDayTemp.classList.add('list-inline-item', 'p-2');
     fiveDayTemp.textContent = "Temp: " + (dailyData.temp.max) + "°F";
