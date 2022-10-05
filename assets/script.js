@@ -24,7 +24,7 @@ function innit() {
 }
 
 function getCityWeather(city) {
-  var requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${APIKey}`;
+  var requestURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${APIKey}`;
 
   fetch(requestURL)
     .then((response) => response.json())

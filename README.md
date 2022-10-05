@@ -11,6 +11,8 @@ and have those citys saved for easy access, especially while traveling.
 
 No installation required, visit website:
 
+<a href= "https://jeromemn.github.io/weather-watcher/" target="_blank">Deployed Site</a>
+
 ## Usage
 
 Type in a city in the US and select search. Doing this will pull up todays weather for that city as well as the next five days. If you plan on visiting more than one city, feel free to search the others as this will save a list of your recent searches. Those recent searches are also clickable and may be used to pull the weather up again without searching.
