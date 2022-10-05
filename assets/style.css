@@ -17,4 +17,9 @@ h1 {
 #current-city {
     background-image: var(--bs-gradient);
     background-color:#000000;
+}
+
+#todays-weather li {
+    list-style: none;
+}
 

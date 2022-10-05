@@ -1,109 +1,52 @@
 var APIKey = "3356db443d68054a9f7c90bfbef2e0a0";
 // Globals
-// let cityName = document.querySelector("#city-name");
-let country = document.querySelector("#country-name");
 let temp = document.querySelector("#temp");
 let hum = document.querySelector("#humidity");
-const cityWeather = document.querySelector("#city-weather");
 let wind = document.querySelector("#wind");
 let uv = document.querySelector("#uv");
 const searchButton = document.querySelector(`#search`);
 const typeCity = document.querySelector("#type-city");
-var weatherDescriptions = document.querySelector(`ul`);
-var historyList = document.querySelector(`ul`);
 let heading = document.getElementById("header");
-let currentCity = document.getElementById("section-current-city");
 let searchedCity = document.getElementById("searched-city");
 const { DateTime } = luxon;
 let date =document.getElementById("date");
 let icon = document.getElementById("icon");
 const history = document.querySelector('#history');
-
-dailyTemp = []
-
-dailyWind = []
-
-dailyHum = []
-
-dailyUv = []
-
-dailyData = []
-
-cityHistoryArray = []
+const todaysIcon = document.querySelector('#icon');
 
 const todaysDate = DateTime.now().toLocaleString(DateTime.DATE_HUGE);
 
 date.textContent = todaysDate;
 
 function innit() {
-  displayCityHistory(cityList);
-  // if (localStorage.getItem("cityHistoryArray") !== null) {
-  //   cityHistoryArray = JSON.parse(localStorage.getItem("cityHistoryArray"));
-  // }
-  saveCity()
+  displayCityHistory();
   
 }
 
-// // create main header ,
-// let body = document.body;
-
-// // five day forcast
-// let fiveDF = document.createElement("h3");
-
-// // search section
-// let searchHeader = document.createElement("h2");
-
-// // main weather section
-// let currentCityHeader = document.createElement("h2");
-
-// // create search history list
-// let searchHistory = document.createElement("div");
-// let listEl = document.createElement("li");
-
-//let cityName = "";
-//   console.log("city");
-//   console.log(typeCity.value);
-function GetcityWeather() {
-  var requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${typeCity.value}&appid=${APIKey}`;
+function getCityWeather(city) {
+  var requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${APIKey}`;
 
   fetch(requestURL)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data[0]);
       var APIUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${data[0].lat}&lon=${data[0].lon}&units=imperial&appid=${APIKey}`;
 
       fetch(APIUrl)
         .then((response) => response.json())
         .then((dataOne) => {
-          console.log(dataOne);
-          console.log(dataOne.current.temp);
 
     
             cityName = (data[0].name);
-            console.log(cityName);
          searchedCity.textContent = cityName;
-         
+         todaysIcon.src = "http://openweathermap.org/img/w/" + dataOne.current.weather[0].icon + ".png";
          temp.textContent = "Temp: " + ( dataOne.current.temp) + "°F";
          wind.textContent = "Wind: " + ( dataOne.current.wind_speed) + "mph";
          hum.textContent = "Humidity: " + ( dataOne.current.humidity) + "%";
          uv.textContent = "UV Index: " + ( dataOne.current.uvi);
-         //  icon.image = (dataOne.current.weather[0].icon);
-
-        //  for (i=0; i < 5; i++) {
-          
-        //   dailyTemp[i] = "Temp: " + (dataOne.daily[i+1].temp.day) + "°F";
-        //   dailyWind[i] = "Wind: " + (dataOne.daily[i+1].wind_speed) + "mph";
-        //   dailyHum[i] = "Humidity: " + (dataOne.daily[i+1].humidity) + "%";
-        //   dailyUv[i] = "UV Index: " + (dataOne.daily[i+1].uvi);
-        //   console.log(dataOne.daily[i]);
-
+      
           
          displayFiveDay(dataOne.daily);
-         saveCity(typeCity.value);
-        //  displayCityHistory();
-          
-        //  dateConversion(dataOne.daily)
-
+       
       
         });
     });
@@ -111,23 +54,17 @@ function GetcityWeather() {
 }
 
 
-  
-// for card dates luxon.DateTime.fromSeconds(dailyData.dt) then format 
-
 function displayFiveDay(forecast) {
   const root = document.getElementById('section-fiveday');
 
 
-  
+  removeChildren(root);
   forecast.forEach(function (dailyData, index) {
-    if (dailyData < 1 && dailyData > 4) return;
-    console.log(dailyData);
-    console.log(index);
-    // let unixDate = (dailyData.dt)
+    if (index < 1 || index > 5) return;
 
     const card = document.createElement('div');
-    card.classList.add('card','border','border-dark', 'col-3');
-    card.style.width = '19rem';
+    card.classList.add('card','border','border-dark', 'col');
+    card.style.width = '100%';
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
     card.appendChild(cardBody);
@@ -136,6 +73,8 @@ function displayFiveDay(forecast) {
     cardTitle.textContent = luxon.DateTime.fromSeconds(dailyData.dt).weekdayLong;
     cardTitle.classList.add('card-title')
     const fiveDayUL = document.createElement('ul');
+    const weatherIcon = document.createElement('img');
+    weatherIcon.src = "http://openweathermap.org/img/w/" + dailyData.weather[0].icon + ".png";
     const fiveDayTemp = document.createElement('li');
     fiveDayTemp.textContent = "Temp: " + (dailyData.temp.max) + "°F";
     const fiveDayWind = document.createElement('li');
@@ -149,7 +88,7 @@ function displayFiveDay(forecast) {
    
     cardBody.appendChild(cardTitle);
     cardTitle.appendChild(fiveDayUL);
-    
+    fiveDayUL.appendChild(weatherIcon);
     fiveDayUL.appendChild(fiveDayTemp);
     fiveDayTemp.appendChild(fiveDayWind);
     fiveDayWind.appendChild(fiveDayHum);
@@ -164,61 +103,54 @@ function displayFiveDay(forecast) {
 
 searchButton.addEventListener("click", function (event) {
   event.preventDefault();
-//   if (typeCity === "") {
-//   alert('City Not found')     // get bryces input
-//   return;
-//   } else {
-  GetcityWeather();
+
+  if (!typeCity.value.length) return;
+  getCityWeather(typeCity.value);
   saveCity()
   
- displayCityHistory();
-  
-  console.log(GetcityWeather);
-  }
+}
 );
 
 function saveCity() {
-  // const cityHistory = ('input').val();
-  //let cityName = ('<input>');
-  // const cityHistoryArray = JSON.parse(
-  //   localStorage.getItem("cityHistoryArray")
-  // );
-
+  
+  const cityHistoryArray = JSON.parse(localStorage.getItem('cityHistoryArray')) || [];
   if (!cityHistoryArray.includes(typeCity.value)) {
-     cityHistoryArray.push(typeCity.value);  
-  localStorage.setItem('cityHistoryArray', JSON.stringify(cityHistoryArray));
+    cityHistoryArray.push(typeCity.value);  
+    localStorage.setItem('cityHistoryArray', JSON.stringify(cityHistoryArray));
+    displayCityHistory();
   }
-  // displayCityHistory(cityHistoryArray)
+  
 }
 
 
 function displayCityHistory() {
-  
-  if (localStorage.getItem('cityHistoryArray') !== null) {
-    const cityHistoryArray = JSON.parse(localStorage.getItem('cityHistoryArray'));
-    // refreshDisplay(history);
-    // if (localStorage.getItem('typeCity.value') === null) {
-    //   return;
-    // } else {
-    // for (let i = 0; i <  cityHistoryArray.length; i ++) {
-    cityHistoryArray.forEach(function(cityHistoryArray) {
-      const cityList = document.createElement('li');
-      cityList.textContent = cityHistoryArray;
-      history.appendChild(cityList);
+    const cityHistoryArray = JSON.parse(localStorage.getItem('cityHistoryArray')) || [];
+    removeChildren(history);
+    cityHistoryArray.forEach(function(city) {
+      const cityButton = document.createElement('button');
+      cityButton.classList.add('btn', 'btn-secondary', 'col','mb-1')
+      cityButton.textContent = city;
+      history.appendChild(cityButton);
+      cityButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        getCityWeather(city);
+    });
     })
-    }
+    
   
 }
 
 
-function refreshDisplay(parentElement) {
+function removeChildren(parentElement) {
 
   while (parentElement.firstChild) {
 
-      parentElemement.removeChild(parentElement);
+      parentElement.removeChild(parentElement.firstChild);
 
   }
 
 }
 
-displayCityHistory();
+
+
+innit();

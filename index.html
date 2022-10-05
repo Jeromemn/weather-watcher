@@ -24,50 +24,40 @@
         </div>
       </div>
     </header>
-
+<div class="container-fluid">
     <div class="row">
-      <div class="col-md-3 justify-content-md-center">
+      <div class="col-2 border">
         <h2> Search for a City: </h2>
-           <input id="type-city" type="textarea">
-      <button id="search"> Search </button>
-      <div class="col" id="section-history">
-        <ul id='history'> History </ul>
+        <div class="input-group mb-3">
+          <input id="type-city" type="text" class="form-control" placeholder="Search for a City" aria-label="Search for a City">
+          <button id="search"> Search </button>
+        </div>
+    
+      <div id="section-history">
+        <h2>History</h2>
+        <div id='history'> </div>
       
       </div>
       </div>
 
-      <div class="col">
+      <div class="col-9 border">
           <div>
           <h1 id="searched-city" class="display-5 fw-bold" ></h1>
           <h5 id="date"></h5>
-       <ul>
-          <li id="icon"></li>
+       <ul id="todays-weather">
+          <img id="icon"></img>
           <li id="temp"></li>
           <li id="wind"></li>
           <li id="humidity"></li>
           <li id="uv"></li>
         </ul>
-      </div> 
+        </div> 
   
-          <div id="section-fiveday">
-            <!--
-      <h3> 5-Day Forecast </h3>
-    <div class="card border border-dark col-3" style="width: 18rem;">
-      <div class="card-body">
-       <h5 class="card-title" id="date"></h5>
-       <ul>
-        <li id="icon"></li>
-        <li id="temp"></li>
-        <li id="wind"></li>
-        <li id="humidity"></li>
-        <li id="uv"></li>
-      </ul>
+          <div id="section-fiveday" class="row"></div>
+          
       </div>
-     </div> 
-  
-          </div>
-      </div> -->
     </div> 
+    </div>
     
 </main>
 
